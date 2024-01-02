@@ -7,7 +7,7 @@ class PublishedCategoryListView(ListView):
     model = Category
     template_name = 'category/category_list.html'
     context_object_name = 'categories'
-    paginate_by = 2  # Adjust the number of items per page as needed
+    paginate_by = 12  # Adjust the number of items per page as needed
 
     def get_queryset(self):
         return Category.objects.get_published()

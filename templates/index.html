@@ -13,52 +13,60 @@
     
     <h1>Welcome to our store!</h1>
 
-    <h2>Featured Products</h2>
+    {% if featured_products %}
+        <h2>Featured Products</h2>
 
-    <!-- Display Featured Products -->
-    <ul>
-        {% for featured_product in featured_products %}
-            <li>
-                {% with cart_item=featured_product|get_cart_item:request.user %}
-                    {% with max_quantity=featured_product.stock|add:0 %}
-                        <a href="{% url 'product:product_detail' pk=featured_product.pk %}">
-                            {{ featured_product.title }}</a> - Price: ${{ featured_product.price }}
-                        <form action="{% url 'cart:add_to_cart' product_id=featured_product.id %}" method="post">
-                            {% csrf_token %}
-                            <input type="number" name="quantity" value="1" min="1" max="{{ featured_product.stock }}" hidden="True">
-                            <button type="submit" {% if cart_item.quantity >= featured_product.stock %}disabled{% endif %}>Add to Cart</button>
-                        </form>
+        <!-- Display Featured Products -->
+        <ul>
+            {% for featured_product in featured_products %}
+                <li>
+                    {% with cart_item=featured_product|get_cart_item:request.user %}
+                        {% with max_quantity=featured_product.stock|add:0 %}
+                            <a href="{% url 'product:product_detail' pk=featured_product.pk %}">
+                                {{ featured_product.title }}</a> - Price: ${{ featured_product.price }}
+                            <form action="{% url 'cart:add_to_cart' product_id=featured_product.id %}" method="post">
+                                {% csrf_token %}
+                                <input type="number" name="quantity" value="1" min="1" max="{{ featured_product.stock }}" hidden="True">
+                                <button type="submit" {% if cart_item.quantity >= featured_product.stock %}disabled{% endif %}>Add to Cart</button>
+                            </form>
+                        {% endwith %}
                     {% endwith %}
-                {% endwith %}
-            </li>
-        {% endfor %}
-    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    
+    {% if featured_categories %}
+        <h2>Featured Categories</h2>
 
-    <h2>Featured Categories</h2>
+        <!-- Display Featured Products -->
+        <ul>
+            {% for featured_category in featured_categories %}
+                <li>
+                    <a href="{% url 'category:category_detail' slug=featured_category.slug %}">
+                        {{ featured_category.title }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <p><a href="{% url 'category:category' %}">View All</a></p>
 
-    <!-- Display Featured Products -->
-    <ul>
-        {% for featured_category in featured_categories %}
+    {% endif %}
+    
+    {% if featured_brands %}
+        <h2>Featured Brands</h2>
+
+        <!-- Display Featured Products -->
+        <ul>
+            {% for featured_brand in featured_brands %}
             <li>
-                <a href="{% url 'category:category_detail' slug=featured_category.slug %}">
-                    {{ featured_category.title }}
+                <a href="{% url 'brand:brand_detail' slug=featured_brand.slug %}">
+                    {{ featured_brand.title }}
                 </a>
             </li>
-        {% endfor %}
-    </ul>
-    
-
-    <h2>Featured Brands</h2>
-
-    <!-- Display Featured Products -->
-    <ul>
-        {% for featured_brand in featured_brands %}
-        <li>
-            <a href="{% url 'brand:brand_detail' slug=featured_brand.slug %}">
-                {{ featured_brand.title }}
-            </a>
-        </li>
-        {% endfor %}
-    </ul>
+            {% endfor %}
+        </ul>
+        <p><a href="{% url 'brand:brand' %}">View All</a></p>
+    {% endif %}
 
 {% endblock %}

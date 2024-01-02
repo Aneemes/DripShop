@@ -16,23 +16,25 @@
                 </li>
             {% endfor %}
         </ul>
-        <div class="pagination">
-            <span class="step-links">
-                {% if featured_products.has_previous %}
-                    <a href="?page_featured=1">&laquo; first</a>
-                    <a href="?page_featured={{ featured_products.previous_page_number }}">previous</a>
-                {% endif %}
-        
-                <span class="current">
-                    Page {{ featured_products.number }} of {{ featured_products.paginator.num_pages }}.
+        {% if featured_products.has_other_pages %}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if featured_products.has_previous %}
+                        <a href="?page_featured=1">&laquo; first</a>
+                        <a href="?page_featured={{ featured_products.previous_page_number }}">previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Page {{ featured_products.number }} of {{ featured_products.paginator.num_pages }}.
+                    </span>
+            
+                    {% if featured_products.has_next %}
+                        <a href="?page_featured={{ featured_products.next_page_number }}">next</a>
+                        <a href="?page_featured={{ featured_products.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
                 </span>
-        
-                {% if featured_products.has_next %}
-                    <a href="?page_featured={{ featured_products.next_page_number }}">next</a>
-                    <a href="?page_featured={{ featured_products.paginator.num_pages }}">last &raquo;</a>
-                {% endif %}
-            </span>
-        </div>
+            </div>
+        {% endif %}
     {% endif %}
     {% if published_products %}
         <h2>All Products</h2>
@@ -45,22 +47,24 @@
                 </li>
             {% endfor %}
         </ul>
-        <div class="pagination">
-            <span class="step-links">
-                {% if published_products.has_previous %}
-                    <a href="?page_published=1">&laquo; first</a>
-                    <a href="?page_published={{ published_products.previous_page_number }}">previous</a>
-                {% endif %}
-        
-                <span class="current">
-                    Page {{ published_products.number }} of {{ published_products.paginator.num_pages }}.
+        {% if published_products.has_other_pages %}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if published_products.has_previous %}
+                        <a href="?page_published=1">&laquo; first</a>
+                        <a href="?page_published={{ published_products.previous_page_number }}">previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Page {{ published_products.number }} of {{ published_products.paginator.num_pages }}.
+                    </span>
+            
+                    {% if published_products.has_next %}
+                        <a href="?page_published={{ published_products.next_page_number }}">next</a>
+                        <a href="?page_published={{ published_products.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
                 </span>
-        
-                {% if published_products.has_next %}
-                    <a href="?page_published={{ published_products.next_page_number }}">next</a>
-                    <a href="?page_published={{ published_products.paginator.num_pages }}">last &raquo;</a>
-                {% endif %}
-            </span>
-        </div>
+            </div>
+        {% endif %}
     {% endif %}
 {% endblock %}

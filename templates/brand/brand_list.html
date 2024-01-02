@@ -1,58 +1,65 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Published Brands</h1>
+    {% if brands %}
+        <h1>All Brands</h1>
 
-<!-- Display Published brands -->
-<ul>
-    {% for brand in brands %}
-        <li><a href="{% url 'brand:brand_detail' slug=brand.slug %}">{{ brand.title }}</a></li>
-    {% endfor %}
-</ul>
-<div class="pagination">
-    <span class="step-links">
-        {% if brands.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ brands.previous_page_number }}">previous</a>
+        <!-- Display Published brands -->
+        <ul>
+            {% for brand in brands %}
+                <li><a href="{% url 'brand:brand_detail' slug=brand.slug %}">{{ brand.title }}</a></li>
+            {% endfor %}
+        </ul>
+        {% if brands.has_other_pages %}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if brands.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ brands.previous_page_number }}">previous</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ brands.number }} of {{ brands.paginator.num_pages }}.
+                    </span>
+
+                    {% if brands.has_next %}
+                        <a href="?page={{ brands.next_page_number }}">next</a>
+                        <a href="?page={{ brands.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
         {% endif %}
+    {% endif %}
 
-        <span class="current">
-            Page {{ brands.number }} of {{ brands.paginator.num_pages }}.
-        </span>
+    {% if featured_brands %}
+    <hr>
 
-        {% if brands.has_next %}
-            <a href="?page={{ brands.next_page_number }}">next</a>
-            <a href="?page={{ brands.paginator.num_pages }}">last &raquo;</a>
+        <h2>Featured Brands</h2>
+
+        <!-- Display Featured brands -->
+        <ul>
+            {% for featured_brand in featured_brands %}
+                <li><a href="{% url 'brand:brand_detail' slug=featured_brand.slug %}">{{ featured_brand.title }}</a></li>
+            {% endfor %}
+        </ul>
+
+        {% if featured_brand.has_other_pages %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if featured_brands.has_previous %}
+                    <a href="?page_featured=1">&laquo; first</a>
+                    <a href="?page_featured={{ featured_brands.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ featured_brands.number }} of {{ featured_brands.paginator.num_pages }}.
+                </span>
+
+                {% if featured_brands.has_next %}
+                    <a href="?page_featured={{ featured_brands.next_page_number }}">next</a>
+                    <a href="?page_featured={{ featured_brands.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
         {% endif %}
-    </span>
-</div>
-
-<hr>
-
-<h2>Featured Brands</h2>
-
-<!-- Display Featured brands -->
-<ul>
-    {% for featured_brand in featured_brands %}
-        <li><a href="{% url 'brand:brand_detail' slug=featured_brand.slug %}">{{ featured_brand.title }}</a></li>
-    {% endfor %}
-</ul>
-
-
-<div class="pagination">
-    <span class="step-links">
-        {% if featured_brands.has_previous %}
-            <a href="?page_featured=1">&laquo; first</a>
-            <a href="?page_featured={{ featured_brands.previous_page_number }}">previous</a>
-        {% endif %}
-
-        <span class="current">
-            Page {{ featured_brands.number }} of {{ featured_brands.paginator.num_pages }}.
-        </span>
-
-        {% if featured_brands.has_next %}
-            <a href="?page_featured={{ featured_brands.next_page_number }}">next</a>
-            <a href="?page_featured={{ featured_brands.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-</div>
+    {% endif %}
 {% endblock %}

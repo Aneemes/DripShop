@@ -15,15 +15,15 @@ class Home(TemplateView):
         context = super().get_context_data(**kwargs)
 
         # Fetch featured products and add them to the context
-        featured_products = Product.objects.get_featured().filter(visible=True)
+        featured_products = Product.objects.get_featured().filter(visible=True).order_by('-updated_date')[:12]
         context['featured_products'] = featured_products
 
         # Fetch featured categories and add them to the context
-        featured_categories = Category.objects.get_featured()
+        featured_categories = Category.objects.get_featured().order_by('-updated_date')[:12]
         context['featured_categories'] = featured_categories
 
         # Fetch featured brand and add them to the context
-        featured_brands = Brand.objects.get_featured()
+        featured_brands = Brand.objects.get_featured().order_by('-updated_date')[:12]
         context['featured_brands'] = featured_brands
 
         # Add cart information to the context if the user is authenticated
