@@ -8,6 +8,7 @@ from dripshop_apps.dripshop_account.models import UserAccount
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
 
+#order/views.py
 User = get_user_model()
 @login_required
 def order_create(request):
@@ -26,7 +27,7 @@ def order_create(request):
                     cart_items.delete()
                     messages.error(request, f"The product '{cart_item.product.title}' is out of stock. Please check back later.")
                     return redirect("cart:cart_detail")
-
+            
             order = form.save(commit=False)
             order.user = request.user
             order.total_price = total_price
@@ -43,7 +44,11 @@ def order_create(request):
             messages.success(request, "Your order has been placed successfully.")
             return redirect("order:order_detail", order_id=order.pk)
     else:
-        form = OrderCreateForm()
+        initial_data = {
+            'delivery_address': request.user.address,
+            'delivery_phone': request.user.phone
+        }
+        form = OrderCreateForm(initial=initial_data)
 
     context = {
         "cart_items": cart_items,
@@ -52,6 +57,7 @@ def order_create(request):
     }
 
     return render(request, "order/order_create.html", context)
+
 
 @login_required
 def order_detail(request, order_id):
@@ -63,23 +69,23 @@ def order_detail(request, order_id):
 
     return render(request, "order/order_detail.html", context)
 
-@login_required
-def order_confirmation(request):
-    user_account = request.user.useraccount
-    if request.method == 'POST':
-        address = request.POST.get('address', user_account.address)
-        phone = request.POST.get('phone', user_account.phone)
-        # Update the user account with the new address and phone
-        user_account.address = address
-        user_account.phone = phone
-        user_account.save()
-        return redirect('order:order_create')
+# @login_required
+# def order_confirmation(request):
+#     user_account = request.user.useraccount
+#     if request.method == 'POST':
+#         address = request.POST.get('address', user_account.address)
+#         phone = request.POST.get('phone', user_account.phone)
+#         # Update the user account with the new address and phone
+#         user_account.address = address
+#         user_account.phone = phone
+#         user_account.save()
+#         return redirect('order:order_create')
 
-    context = {
-        'user_account': user_account,
-    }
+#     context = {
+#         'user_account': user_account,
+#     }
 
-    return render(request, 'order/order_confirmation.html', context)
+#     return render(request, 'order/order_confirmation.html', context)
 
 @login_required
 def order_list(request):
