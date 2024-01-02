@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>{{ brand.title }} Details</h1>
+    
+    <p>{{ brand.description }}</p>
+    
+    <h2>Featured Products</h2>
+    
+    <ul>
+        {% for featured_product in featured_products %}
+            <li>
+                <a href="{% url 'product:product_detail' pk=featured_product.pk %}">
+                    {{ featured_product.title }} - Price: ${{ featured_product.price }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

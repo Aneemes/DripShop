@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Published Brands</h1>
+
+<!-- Display Published brands -->
+<ul>
+    {% for brand in brands %}
+        <li>{{ brand.title }}</li>
+    {% endfor %}
+</ul>
+
+<hr>
+
+<h2>Featured Brands</h2>
+
+<!-- Display Featured brands -->
+<ul>
+    {% for featured_brand in featured_brands %}
+        <li>{{ featured_brand.title }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

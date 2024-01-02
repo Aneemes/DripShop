@@ -1,0 +1,13 @@
+<div class="topnav">
+    <a href="/">Home</a>
+    <a href="{% url 'cart:cart_detail' %}">Cart</a>
+    <a href="{% url 'order:order_list' %}">Orders</a>
+    {% load socialaccount %}
+
+    {% if user.is_authenticated %}
+    <a>Welcome {{ user.username }} !!!</a>
+    <a href="{% url 'account_logout' %}">Logout</a>
+    {% else %}
+    <a href="{% provider_login_url 'github' %}">Sign Up</a>
+    {% endif %}
+</div>

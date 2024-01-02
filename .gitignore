@@ -1,0 +1,11 @@
+uploads/
+env/
+.env
+env.bak
+__pycache__
+*.pyc
+*.pot
+*.log
+*.bak
+db.sqlite3
+.idea/

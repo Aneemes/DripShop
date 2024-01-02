@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Published Categories</h1>
+
+<!-- Display Published categories -->
+<ul>
+    {% for category in categories %}
+        <li>{{ category.title }}</li>
+    {% endfor %}
+</ul>
+
+<hr>
+
+<h2>Featured Categories</h2>
+
+<!-- Display Featured categories -->
+<ul>
+    {% for featured_category in featured_categories %}
+        <li>{{ featured_category.title }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Order Details</h2>
+  <p><strong>Order ID:</strong> {{ order.id }}</p>
+  <p><strong>Total Price:</strong> {{ order.total_price }}</p>
+  <p><strong>Status:</strong> {{ order.status }}</p>
+  <hr>
+  <h2>Order Items</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order_item in order.orderitem_set.all %}
+        <tr>
+          <td><a href="{% url 'product:product_detail' pk=order_item.product.pk %}">{{ order_item.product.title }}</a></td>
+          <td>{{ order_item.quantity }}</td>
+          <td>{{ order_item.subtotal }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

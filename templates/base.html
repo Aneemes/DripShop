@@ -1,0 +1,33 @@
+<!DOCTYPE html> {% load static %}
+<html lang="{{lang}}">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Dripshop | {% block title %} homepage {% endblock title %}</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport'>
+    {% block style %}
+    <!-- css -->
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+
+    {% endblock style %}
+
+</head>
+
+<body>
+    <!-- Navbar -->
+    {% include 'partials/navbar.html' %}
+    {% include 'partials/message_pop_ups.html' %}
+
+    <!-- Content -->
+    {% block content %} {% endblock content %}
+
+    <!-- Footer -->
+    {% include 'partials/footer.html' %}
+
+    {% block script %}
+
+    {% endblock script %}
+
+
+</html>

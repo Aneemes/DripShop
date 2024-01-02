@@ -1,0 +1,19 @@
+<!-- order/order_create.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Order Summary</h1>
+
+    <p>Total: ${{ total_price }}</p>
+
+    <form method="post" action="{% url 'order:order_create' %}">
+        {% csrf_token %}
+        <label for="address">Delivery Address:</label>
+        <input type="text" name="address" required>
+
+        <label for="phone">Phone Number:</label>
+        <input type="text" name="phone" required>
+
+        <button type="submit">Place Order</button>
+    </form>
+{% endblock %}

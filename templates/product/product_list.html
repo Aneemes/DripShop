@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Products by Category and Brand</h1>
+
+<form id="filterForm">
+    <select name="category" id="categorySelect">
+        <option value="">All Categories</option>
+        {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.title }}</option>
+        {% endfor %}
+    </select>
+
+    <select name="brand" id="brandSelect">
+        <option value="">All Brands</option>
+        {% for brand in brands %}
+            <option value="{{ brand.id }}">{{ brand.title }}</option>
+        {% endfor %}
+    </select>
+</form>
+
+<ul id="productList">
+    {% for product in products %}
+        <li>{{ product.title }}</li>
+    {% empty %}
+        <li>No products found.</li>
+    {% endfor %}
+</ul>
+
+<script>
+document.getElementById('categorySelect').addEventListener('change', updateProducts);
+document.getElementById('brandSelect').addEventListener('change', updateProducts);
+
+function updateProducts() {
+    var categoryValue = document.getElementById('categorySelect').value;
+    var brandValue = document.getElementById('brandSelect').value;
+
+    fetch('{% url "product:update_products" %}?category=' + categoryValue + '&brand=' + brandValue)
+        .then(response => response.json())
+        .then(data => {
+            var productList = document.getElementById('productList');
+            productList.innerHTML = ''; 
+
+            if (data.length > 0) {
+                data.forEach(product => {
+                    var li = document.createElement('li');
+                    li.textContent = product.title;
+                    productList.appendChild(li);
+                });
+            } else {
+                var li = document.createElement('li');
+                li.textContent = 'No products found.';
+                productList.appendChild(li);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,19 @@
+<!-- category/category_detail.html -->
+{% extends 'base.html' %}
+{% block content %}
+    <h1>{{ category.title }} Details</h1>
+    
+    <p>{{ category.description }}</p>
+    
+    <h2>Featured Products</h2>
+    
+    <ul>
+        {% for featured_product in featured_products %}
+            <li>
+                <a href="{% url 'product:product_detail' pk=featured_product.pk %}">
+                    {{ featured_product.title }} - Price: ${{ featured_product.price }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

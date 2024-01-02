@@ -1,0 +1,18 @@
+<!-- product/product_detail.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ product.title }}</h1>
+    <p>{{ product.description }}</p>
+    <p>Price: ${{ product.price }}</p>
+
+    {% if user_authenticated %}
+        <form action="{% url 'cart:add_to_cart' product_id=product.id %}" method="post">
+            {% csrf_token %}
+            <input type="number" name="quantity" value="1" min="1" max="{{ max_quantity }}">
+            <button type="submit" {% if max_quantity <= 0 %}disabled{% endif %}>Add to Cart</button>
+        </form>
+    {% else %}
+        <p>Please <a href="{% url 'account_login' %}">log in</a> to add items to your cart.</p>
+    {% endif %}
+{% endblock %}

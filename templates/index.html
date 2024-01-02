@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load cart_filters %}
+{% load static %}
+{% block content %}
+    {% load socialaccount %}
+    {% comment %}
+    {% if user.is_authenticated %}
+    <p>Welcome {{ user.username }} !!!</p>
+    {% else %}
+    <a href="{% provider_login_url 'github' %}">Sign Up</a>
+    {% endif %}
+    {% endcomment %}
+    
+    <h1>Welcome to our store!</h1>
+
+    <h2>Featured Products</h2>
+
+    <!-- Display Featured Products -->
+    <ul>
+        {% for featured_product in featured_products %}
+            <li>
+                {% with cart_item=featured_product|get_cart_item:request.user %}
+                    {% with max_quantity=featured_product.stock|add:0 %}
+                        <a href="{% url 'product:product_detail' pk=featured_product.pk %}">
+                            {{ featured_product.title }}</a> - Price: ${{ featured_product.price }}
+                        <form action="{% url 'cart:add_to_cart' product_id=featured_product.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="number" name="quantity" value="1" min="1" max="{{ max_quantity }}" hidden="True">
+                            <button type="submit" {% if not cart_item or cart_item.quantity >= max_quantity %}disabled{% endif %}>Add to Cart</button>
+                        </form>
+                    {% endwith %}
+                {% endwith %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Featured Categories</h2>
+
+    <!-- Display Featured Products -->
+    <ul>
+        {% for featured_category in featured_categories %}
+            <li>
+                <a href="{% url 'category:category_detail' slug=featured_category.slug %}">
+                    {{ featured_category.title }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    
+
+    <h2>Featured Brands</h2>
+
+    <!-- Display Featured Products -->
+    <ul>
+        {% for featured_brand in featured_brands %}
+        <li>
+            <a href="{% url 'brand:brand_detail' slug=featured_brand.slug %}">
+                {{ featured_brand.title }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

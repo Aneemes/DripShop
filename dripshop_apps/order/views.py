@@ -1,0 +1,96 @@
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .models import Order, OrderItem
+from .forms import OrderCreateForm
+from dripshop_apps.cart.models import Cart
+from dripshop_apps.dripshop_account.models import UserAccount
+from django.contrib.auth import get_user_model
+from django.core.paginator import Paginator
+
+User = get_user_model()
+@login_required
+def order_create(request):
+    cart_items = Cart.objects.filter(user=request.user)
+    total_price = sum(item.subtotal() for item in cart_items)
+
+    if not cart_items:
+        messages.error(request, "Your cart is empty.")
+        return redirect("cart:cart_detail")
+
+    if request.method == 'POST':
+        form = OrderCreateForm(request.POST)
+        if form.is_valid():
+            for cart_item in cart_items:
+                if cart_item.product.stock < cart_item.quantity:
+                    cart_items.delete()
+                    messages.error(request, f"The product '{cart_item.product.title}' is out of stock. Please check back later.")
+                    return redirect("cart:cart_detail")
+
+            order = form.save(commit=False)
+            order.user = request.user
+            order.total_price = total_price
+            order.save()
+
+            for cart_item in cart_items:
+                order_item = OrderItem.objects.create(order=order, product=cart_item.product, quantity=cart_item.quantity)
+
+                # Update the stock of the product
+                cart_item.product.stock -= cart_item.quantity
+                cart_item.product.save()
+
+            cart_items.delete()
+            messages.success(request, "Your order has been placed successfully.")
+            return redirect("order:order_detail", order_id=order.pk)
+    else:
+        form = OrderCreateForm()
+
+    context = {
+        "cart_items": cart_items,
+        "form": form,
+        "total_price": total_price,
+    }
+
+    return render(request, "order/order_create.html", context)
+
+@login_required
+def order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+
+    context = {
+        "order": order,
+    }
+
+    return render(request, "order/order_detail.html", context)
+
+@login_required
+def order_confirmation(request):
+    user_account = request.user.useraccount
+    if request.method == 'POST':
+        address = request.POST.get('address', user_account.address)
+        phone = request.POST.get('phone', user_account.phone)
+        # Update the user account with the new address and phone
+        user_account.address = address
+        user_account.phone = phone
+        user_account.save()
+        return redirect('order:order_create')
+
+    context = {
+        'user_account': user_account,
+    }
+
+    return render(request, 'order/order_confirmation.html', context)
+
+@login_required
+def order_list(request):
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+
+    paginator = Paginator(orders, 12)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'orders': page_obj,
+    }
+
+    return render(request, 'order/order_list.html', context)
