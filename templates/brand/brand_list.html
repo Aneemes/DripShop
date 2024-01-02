@@ -5,9 +5,26 @@
 <!-- Display Published brands -->
 <ul>
     {% for brand in brands %}
-        <li>{{ brand.title }}</li>
+        <li><a href="{% url 'brand:brand_detail' slug=brand.slug %}">{{ brand.title }}</a></li>
     {% endfor %}
 </ul>
+<div class="pagination">
+    <span class="step-links">
+        {% if brands.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ brands.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ brands.number }} of {{ brands.paginator.num_pages }}.
+        </span>
+
+        {% if brands.has_next %}
+            <a href="?page={{ brands.next_page_number }}">next</a>
+            <a href="?page={{ brands.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
 
 <hr>
 
@@ -16,7 +33,26 @@
 <!-- Display Featured brands -->
 <ul>
     {% for featured_brand in featured_brands %}
-        <li>{{ featured_brand.title }}</li>
+        <li><a href="{% url 'brand:brand_detail' slug=featured_brand.slug %}">{{ featured_brand.title }}</a></li>
     {% endfor %}
 </ul>
+
+
+<div class="pagination">
+    <span class="step-links">
+        {% if featured_brands.has_previous %}
+            <a href="?page_featured=1">&laquo; first</a>
+            <a href="?page_featured={{ featured_brands.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ featured_brands.number }} of {{ featured_brands.paginator.num_pages }}.
+        </span>
+
+        {% if featured_brands.has_next %}
+            <a href="?page_featured={{ featured_brands.next_page_number }}">next</a>
+            <a href="?page_featured={{ featured_brands.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
 {% endblock %}

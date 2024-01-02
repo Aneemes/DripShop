@@ -5,9 +5,26 @@
 <!-- Display Published categories -->
 <ul>
     {% for category in categories %}
-        <li>{{ category.title }}</li>
+        <li><a href="{% url 'category:category_detail' slug=category.slug %}">{{ category.title }}</a></li>
     {% endfor %}
 </ul>
+<div class="pagination">
+    <span class="step-links">
+        {% if categories.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ categories.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ categories.number }} of {{ categories.paginator.num_pages }}.
+        </span>
+
+        {% if categories.has_next %}
+            <a href="?page={{ categories.next_page_number }}">next</a>
+            <a href="?page={{ categories.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
 
 <hr>
 
@@ -16,7 +33,26 @@
 <!-- Display Featured categories -->
 <ul>
     {% for featured_category in featured_categories %}
-        <li>{{ featured_category.title }}</li>
+        <li><a href="{% url 'category:category_detail' slug=featured_category.slug %}">{{ featured_category.title }}</a></li>
     {% endfor %}
 </ul>
+
+
+<div class="pagination">
+    <span class="step-links">
+        {% if featured_categories.has_previous %}
+            <a href="?page_featured=1">&laquo; first</a>
+            <a href="?page_featured={{ featured_categories.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ featured_categories.number }} of {{ featured_categories.paginator.num_pages }}.
+        </span>
+
+        {% if featured_categories.has_next %}
+            <a href="?page_featured={{ featured_categories.next_page_number }}">next</a>
+            <a href="?page_featured={{ featured_categories.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
 {% endblock %}

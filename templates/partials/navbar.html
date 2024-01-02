@@ -2,6 +2,8 @@
     <a href="/">Home</a>
     <a href="{% url 'cart:cart_detail' %}">Cart</a>
     <a href="{% url 'order:order_list' %}">Orders</a>
+    <a href="{% url 'brand:brand' %}">Brands</a>
+    <a href="{% url 'category:category' %}">Categories</a>
     {% load socialaccount %}
 
     {% if user.is_authenticated %}

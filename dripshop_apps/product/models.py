@@ -51,14 +51,21 @@ class ProductManager(models.Manager):
     def get_queryset(self):
         return ProductQuerySet(self.model, using=self._db)
 
-    def get_published(self):
+    def published(self):
         return self.get_queryset().published()
 
-    def get_featured(self):
+    def featured(self):
         return self.get_queryset().featured()
+
+    def get_published(self):
+        return self.published()
+
+    def get_featured(self):
+        return self.featured()
 
     def updated_date_string(self):
         return self.get_queryset().values_list('updated_date', flat=True).first()
+
 
 class Product(AbstractItem):
     price = models.DecimalField(max_digits=10, decimal_places=2)
