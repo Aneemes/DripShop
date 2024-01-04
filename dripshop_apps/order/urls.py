@@ -7,6 +7,6 @@ app_name = 'order'
 urlpatterns = [
     path("create/", order_create, name="order_create"),
     # path("confirmation/", order_confirmation, name="order_confirmation"),
-    path("<int:order_id>/", order_detail, name="order_detail"),
+    path("order/<str:order_id>/", order_detail, name="order_detail"),
     path('list/', order_list, name='order_list'),
 ]

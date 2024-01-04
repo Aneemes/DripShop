@@ -51,7 +51,7 @@ def order_create(request):
                     transaction.on_commit(lambda: send_mail_on_order_placement(request, order=order))
 
                     messages.success(request, "Your order has been placed successfully.")
-                    return redirect("order:order_detail", order_id=order.pk)
+                    return redirect("order:order_detail", order_id=order.id)
                 
                 # transaction.on_commit(order_email)
 

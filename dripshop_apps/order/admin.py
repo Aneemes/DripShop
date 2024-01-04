@@ -9,9 +9,9 @@ class OrderItemInline(admin.TabularInline):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderItemInline]
-    list_display = ('id', 'user', 'total_price', 'created_at', 'status')
+    list_display = ('user', 'total_price', 'created_at', 'status')
     list_filter = ('status',)
-    search_fields = ('id', 'user__username')
+    search_fields = ('user__username',)
 
     def save_model(self, request, obj, form, change):
         original_obj = self.model.objects.get(pk=obj.pk) if change else None

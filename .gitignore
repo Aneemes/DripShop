@@ -9,3 +9,5 @@ __pycache__
 *.bak
 db.sqlite3
 .idea/
+*.dat
+*.dir

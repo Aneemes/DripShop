@@ -8,3 +8,8 @@ django-nested-admin==4.0.2
 django-treebeard==4.7
 django-mptt==0.15.0
 python-dotenv==1.0.0
+celery==5.3.6
+django-celery-results==2.5.1
+redis==5.0.1
+django-redis==5.4.0
+django-celery-beat==2.5.0

@@ -46,6 +46,8 @@ THIRDPARTY_APPS = [
     'corsheaders',
     'treebeard',
     'nested_admin',
+    # 'django_celery_results',
+    # 'django_celery_beat',
 ]
 
 DRIPSHOP_APPS = [
@@ -125,6 +127,31 @@ SOCIALACCOUNT_EMAIL_VERIFICATION = False
 ACCOUNT_SIGNUP_FORM_CLASS = "dripshop_apps.dripshop_account.forms.CustomSignupForm"
 
 
+#CELERY STUFFS
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Kathmandu'
+# CELERY_TASK_TRACK_STARTED = True
+# CELERY_TASK_TIME_LIMIT = 30 * 60
+
+# CELERY BEAT SCHEDULER
+# CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+# REDIS CACHE
+
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": f"redis://localhost:6379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         },
+#     }
+# }
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -143,6 +170,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#email config
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
 EMAIL_HOST = os.environ.get('EMAIL_HOST')
 EMAIL_PORT = os.environ.get('EMAIL_PORT')
@@ -156,7 +184,7 @@ ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kathmandu'
 
 USE_I18N = True
 
