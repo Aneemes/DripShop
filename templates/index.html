@@ -27,7 +27,7 @@
                             <form action="{% url 'cart:add_to_cart' product_id=featured_product.id %}" method="post">
                                 {% csrf_token %}
                                 <input type="number" name="quantity" value="1" min="1" max="{{ featured_product.stock }}" hidden="True">
-                                <button type="submit" {% if cart_item.quantity >= featured_product.stock %}disabled{% endif %}>Add to Cart</button>
+                                <button type="submit" {% if cart_item.quantity >= featured_product.stock or featured_product.stock == 0 %}disabled{% endif %}>Add to Cart</button>
                             </form>
                         {% endwith %}
                     {% endwith %}

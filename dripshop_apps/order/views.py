@@ -7,6 +7,10 @@ from dripshop_apps.cart.models import Cart
 from dripshop_apps.dripshop_account.models import UserAccount
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
+from django.db import transaction
+from dripshop_apps.order.utils import send_mail_on_order_placement
+
+
 
 #order/views.py
 User = get_user_model()
@@ -22,27 +26,38 @@ def order_create(request):
     if request.method == 'POST':
         form = OrderCreateForm(request.POST)
         if form.is_valid():
-            for cart_item in cart_items:
-                if cart_item.product.stock < cart_item.quantity:
+            try:
+                with transaction.atomic():
+                    for cart_item in cart_items:
+                        if cart_item.product.stock < cart_item.quantity:
+                            cart_items.delete()
+                            messages.error(request, f"The product '{cart_item.product.title}' is out of stock. Please check back later.")
+                            return redirect("cart:cart_detail")
+                    
+                    order = form.save(commit=False)
+                    order.user = request.user
+                    order.total_price = total_price
+                    order.save()
+
+                    for cart_item in cart_items:
+                        order_item = OrderItem.objects.create(order=order, product=cart_item.product, quantity=cart_item.quantity)
+
+                        # Update the stock of the product
+                        cart_item.product.stock -= cart_item.quantity
+                        cart_item.product.save()
+
                     cart_items.delete()
-                    messages.error(request, f"The product '{cart_item.product.title}' is out of stock. Please check back later.")
-                    return redirect("cart:cart_detail")
-            
-            order = form.save(commit=False)
-            order.user = request.user
-            order.total_price = total_price
-            order.save()
 
-            for cart_item in cart_items:
-                order_item = OrderItem.objects.create(order=order, product=cart_item.product, quantity=cart_item.quantity)
+                    transaction.on_commit(lambda: send_mail_on_order_placement(request, order=order))
 
-                # Update the stock of the product
-                cart_item.product.stock -= cart_item.quantity
-                cart_item.product.save()
+                    messages.success(request, "Your order has been placed successfully.")
+                    return redirect("order:order_detail", order_id=order.pk)
+                
+                # transaction.on_commit(order_email)
 
-            cart_items.delete()
-            messages.success(request, "Your order has been placed successfully.")
-            return redirect("order:order_detail", order_id=order.pk)
+            except Exception as e:
+                messages.error(request, f"There was an error placing the order: {str(e)}")
+
     else:
         initial_data = {
             'delivery_address': request.user.address,

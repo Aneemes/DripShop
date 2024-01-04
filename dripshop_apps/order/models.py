@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from dripshop_apps.product.models import Product
 from django.conf import settings
+from django.urls import reverse
 
 class Order(models.Model):
     STATUS_CHOICES = [
@@ -20,6 +21,12 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order {self.pk}"
+    
+    def get_admin_url(self):
+        return reverse("admin:%s_%s_change" %(self._meta.app_label, self._meta.model_name), args=(self.pk,))
+
+    def get_absolute_url(self):
+        return reverse("order:order_detail", args=(self.pk,))
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
