@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
 from django.db import transaction
 from dripshop_apps.order.utils import send_mail_on_order_placement
-
+from dripshop_apps.wishlist.tasks import remove_products_from_wishlist
 
 
 #order/views.py
@@ -30,7 +30,7 @@ def order_create(request):
                 with transaction.atomic():
                     for cart_item in cart_items:
                         if cart_item.product.stock < cart_item.quantity:
-                            cart_items.delete()
+                            # cart_items.delete() dont remove from the cart
                             messages.error(request, f"The product '{cart_item.product.title}' is out of stock. Please check back later.")
                             return redirect("cart:cart_detail")
                     
@@ -45,6 +45,9 @@ def order_create(request):
                         # Update the stock of the product
                         cart_item.product.stock -= cart_item.quantity
                         cart_item.product.save()
+
+                    transaction.on_commit(lambda: remove_products_from_wishlist.delay(request.user.id, list(cart_items.values_list('product_id', flat=True))))
+        
 
                     cart_items.delete()
 

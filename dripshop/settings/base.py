@@ -88,6 +88,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                #user added contexts
+                'dripshop_apps.wishlist.context_processors.user_wishlist'
             ],
             'loaders': [
                 'django.template.loaders.filesystem.Loader',
@@ -128,12 +130,12 @@ ACCOUNT_SIGNUP_FORM_CLASS = "dripshop_apps.dripshop_account.forms.CustomSignupFo
 
 
 #CELERY STUFFS
-CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Asia/Kathmandu'
+# CELERY_BROKER_URL = 'redis://localhost:25672'
+# CELERY_RESULT_BACKEND = 'redis://localhost:25672'
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_TIMEZONE = 'Asia/Kathmandu'
 # CELERY_TASK_TRACK_STARTED = True
 # CELERY_TASK_TIME_LIMIT = 30 * 60
 

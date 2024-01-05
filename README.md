@@ -14,7 +14,7 @@ start the celery-beat-scheduler
 
 or if on windows run the following:
 
-`celery -A myapp.celeryapp worker --loglevel=info -P eventlet`
+`celery -A dripshop worker --loglevel=info -P eventlet`
 
 running the server
 `python manage.py runserver --settings=dripshop.settings.dev`

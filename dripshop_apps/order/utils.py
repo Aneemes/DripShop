@@ -4,7 +4,7 @@ from django.conf import settings
 from django.urls import reverse
 from django.contrib.sites.models import Site
 from dripshop_apps.core.utils import get_domain_name
-from dripshop_apps.core.tasks import send_email_to
+from dripshop_apps.core.tasks import send_email_task
 
 #TODO:
 #make this a celery task so its quicker 
@@ -32,7 +32,7 @@ def order_placed_mail_admin(request, order, domain):
     print(message)
     
     # send_mail(subject, message, from_email=None, recipient_list=[ADMIN_EMAIL])
-    return send_email_to.apply_async(args=["New order placed by {}".format(request.user.username), message, settings.ADMIN_EMAIL])
+    # return send_email_task.apply_async(args=["New order placed by {}".format(request.user.username), message, settings.ADMIN_EMAIL])
 
 def order_placed_mail_customer(request, order, domain):
     """Send an email to the customer"""
@@ -50,6 +50,7 @@ def order_placed_mail_customer(request, order, domain):
     # send_mail(subject, message, settings.EMAIL_HOST_USER, [request.user.email])
     print(subject)
     print(message)
+    print("emailing is commented out")
 
     # func.delay() doesnt work so apply_async([])
-    return send_email_to.apply_async(args=["Your order has been placed successfully.", message, request.user.email])
+    # return send_email_task.apply_async(args=["Your order has been placed successfully.", message, request.user.email])

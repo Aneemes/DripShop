@@ -13,6 +13,7 @@ from django.contrib import messages
 from dripshop_apps.cart.models import Cart
 from django.views import View
 from django.contrib.auth.models import AnonymousUser
+from dripshop_apps.wishlist.models import Wishlist
 
 class PublishedProductListView(ListView):
     model = Product
@@ -148,10 +149,16 @@ class ProductDetailView(DetailView):
             context['cart_items'] = cart_items
             context['cart_quantity'] = cart_quantity
             context['max_quantity'] = max_quantity
+            
+            # # Get the user's wishlist
+            # wishlist = Wishlist.objects.filter(user=user, products=product).first()
+            # context['user_wishlist'] = wishlist
+            
         else:
             context['cart_items'] = []
             context['cart_quantity'] = 0
             context['max_quantity'] = product.stock
+            # context['user_wishlist'] = None
         
         context['user_authenticated'] = user.is_authenticated if user else False
         return context

@@ -30,6 +30,7 @@ urlpatterns = [
     path('brand/', include(('dripshop_apps.brand.urls', 'brand'), namespace='brand')),
     path('cart', include(('dripshop_apps.cart.urls', 'cart'), namespace='cart')),
     path('order/', include(('dripshop_apps.order.urls', 'order'), namespace='order')),
+    path('wishlist/', include(('dripshop_apps.wishlist.urls', 'wishlist'), namespace='wishlist')),
 ]
 
 if settings.DEBUG:
