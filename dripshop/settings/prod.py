@@ -1,4 +1,9 @@
-from .base import *  
+from .base import *
+ 
+DEBUG = True
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'
+
+SECRET_KEY = 'egfatgasgesgsegsedsdgsrghs-g-srgsd-gasegfseg'
 
 DATABASES = {
     'default': {

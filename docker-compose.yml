@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: docker-config/docker-code/Dockerfile
+    depends_on:
+      - postgres
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=dripshop.settings.dev
+    env_file:
+      - docker-config/docker-code/code.env
+
+  postgres:
+    build:
+      context: .
+      dockerfile: docker-config/docker-postgres/Dockerfile
+    env_file:
+      - docker-config/docker-postgres/postgres.env

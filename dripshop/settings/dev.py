@@ -5,7 +5,7 @@ DEBUG = True
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_90raiv94d$4k0xm5egoj&w$-b+fu49*4w*xmt0$3w8_u-yxwc'
+SECRET_KEY = 'egfatgasgesgsegsedsdgsrghs-g-srgsd-gasegfseg'
 
 DATABASES = {
     'default': {
@@ -14,6 +14,7 @@ DATABASES = {
         'NAME': os.environ.get('DB_NAME'),
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST':os.environ.get('DB_HOST'),
         'PORT': os.environ.get('DB_PORT'),
     }
 }
