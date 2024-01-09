@@ -216,12 +216,12 @@ AUTH_USER_MODEL = 'dripshop_account.UserAccount'
 CART_SESSION_ID = 'cart'
 
 FIREBASE_CONFIG = {
-    "apiKey": "AIzaSyDoHPxWkQw8hJbtJS1XEdhxnEctgLBs394",
-    "authDomain": "dripshop-57029.firebaseapp.com",
-    'databaseURL': 'YOUR_DATABASE_URL',
-    "projectId": "dripshop-57029",
-    "storageBucket": "dripshop-57029.appspot.com",
-    "messagingSenderId": "411065000651",
-    "appId": "1:411065000651:web:6ac998cdba2b04e1a3714e",
-    'measurementId': 'YOUR_MEASUREMENT_ID',
+    "apiKey": os.environ.get('FIREBASE_API_KEY'),
+    "authDomain": os.environ.get('FIREBASE_AUTH_DOMAIN'),
+    'databaseURL': os.environ.get('FIREBASE_DATABASE_URL'),
+    "projectId": os.environ.get('FIREBASE_PROJECT_ID'),
+    "storageBucket": os.environ.get('FIREBASE_STORAGE_BUCKET'),
+    "messagingSenderId": os.environ.get('FIREBASE_MESSAGING_SENDER_ID'),
+    "appId": os.environ.get('FIREBASE_APP_ID'),
+    'measurementId': os.environ.get('FIREBASE_MEASUREMENT_ID'),
 }
