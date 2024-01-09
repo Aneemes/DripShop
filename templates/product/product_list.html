@@ -20,7 +20,7 @@
 
 <ul id="productList">
     {% for product in products %}
-        <li>{{ product.title }}</li>
+        <li><a href="{% url 'product:product_detail' pk=product.pk %}">{{ product.title }}</a></li>
     {% empty %}
         <li>No products found.</li>
     {% endfor %}

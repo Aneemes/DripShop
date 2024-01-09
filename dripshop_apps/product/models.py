@@ -5,40 +5,13 @@ from dripshop_apps.category.models import Category
 from dripshop_apps.brand.models import Brand
 from django.contrib.contenttypes.fields import GenericRelation
 from django.utils import timezone
-from django.db.models.signals import pre_save
+from django.dispatch import receiver
+from django.db.models.signals import pre_save, pre_delete
 from dripshop_apps.core.receivers import slugify_pre_save, publish_state_pre_save, update_featured_on_publish, update_visibility_on_publish
+from .tasks import upload_to_firebase
+from .utils import product_thumbnail_upload_path, product_image_upload_path, sanitize_for_directory_name
 
-def sanitize_for_directory_name(value):
-    # Replace spaces with underscores and remove other characters
-    return ''.join(c if c.isalnum() or c in ['_', '-'] else '_' for c in value)
 
-def product_image_upload_path(instance, filename):
-    print("Product instance:", instance)
-    title = getattr(instance.product, 'title', 'unknown')
-    print("Product title:", title)
-
-    # Sanitize the title for directory name
-    product_title = sanitize_for_directory_name(title)
-
-    timestamp = timezone.now().strftime('%Y-%m-%d_%H-%M-%S')
-    extension = os.path.splitext(filename)[1]
-    file_path = f'uploads/products/{product_title}/general/{timestamp}{extension}'
-    print("Generated Image Path:", file_path)
-    return file_path
-
-def product_thumbnail_upload_path(instance, filename):
-    print("Product instance:", instance)
-    title = getattr(instance, 'title', 'unknown')
-    print("Product title:", title)
-
-    # Sanitize the title for directory name
-    product_title = sanitize_for_directory_name(title)
-    
-    timestamp = timezone.now().strftime('%Y-%m-%d_%H-%M-%S')
-    extension = os.path.splitext(filename)[1]
-    file_path = f'uploads/products/{product_title}/thumbnail/{timestamp}{extension}'
-    print("Generated Thumbnail Path:", file_path)
-    return file_path
 
 class ProductQuerySet(models.QuerySet):
     def published(self):
@@ -77,7 +50,6 @@ class Product(AbstractItem):
 
     objects=ProductManager()
 
-
     class Meta:
         verbose_name = "Product"
         verbose_name_plural = "Products"
@@ -93,4 +65,3 @@ class ProductImage(models.Model):
 pre_save.connect(publish_state_pre_save, sender=Product)
 pre_save.connect(slugify_pre_save, sender=Product)
 pre_save.connect(update_featured_on_publish, sender=Product)
-

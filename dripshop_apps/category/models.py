@@ -3,7 +3,7 @@ from dripshop_apps.core.abstract_models import AbstractItem
 from mptt.models import MPTTModel, TreeForeignKey, MPTTOptions
 from django.db.models.signals import pre_save
 from dripshop_apps.core.receivers import slugify_pre_save, publish_state_pre_save, update_featured_on_publish
-
+from dripshop_apps.category.tasks import update_related_product_visibility
 
 class CategoryQuerySet(models.QuerySet):
     def published(self):
@@ -45,11 +45,11 @@ class Category(AbstractItem, MPTTModel):
 
         # Update visibility status of related products based on the publishing status of the category
         if transitioning_from_unpublished:
-            self.product_category.update(visible=True)
+            update_related_product_visibility.delay(self.pk, True)  # Enqueue task
         elif self.published == 'no':
-            self.product_category.update(visible=False)
+            update_related_product_visibility.delay(self.pk, False)  # Enqueue task
         else:
-            self.product_category.update(visible=True)
+            update_related_product_visibility.delay(self.pk, self.published == 'yes')  # Enqueue task
 
     def __str__(self):
         return self.title

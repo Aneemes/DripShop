@@ -46,8 +46,9 @@ def order_create(request):
                         cart_item.product.stock -= cart_item.quantity
                         cart_item.product.save()
 
-                    transaction.on_commit(lambda: remove_products_from_wishlist.delay(request.user.id, list(cart_items.values_list('product_id', flat=True))))
-        
+                    product_ids = list(order.orderitem_set.values_list('product_id', flat=True))
+
+                    transaction.on_commit(lambda: remove_products_from_wishlist.delay(request.user.id, product_ids))     
 
                     cart_items.delete()
 
@@ -87,23 +88,6 @@ def order_detail(request, order_id):
 
     return render(request, "order/order_detail.html", context)
 
-# @login_required
-# def order_confirmation(request):
-#     user_account = request.user.useraccount
-#     if request.method == 'POST':
-#         address = request.POST.get('address', user_account.address)
-#         phone = request.POST.get('phone', user_account.phone)
-#         # Update the user account with the new address and phone
-#         user_account.address = address
-#         user_account.phone = phone
-#         user_account.save()
-#         return redirect('order:order_create')
-
-#     context = {
-#         'user_account': user_account,
-#     }
-
-#     return render(request, 'order/order_confirmation.html', context)
 
 @login_required
 def order_list(request):

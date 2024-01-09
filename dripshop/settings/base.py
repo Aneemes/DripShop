@@ -130,12 +130,12 @@ ACCOUNT_SIGNUP_FORM_CLASS = "dripshop_apps.dripshop_account.forms.CustomSignupFo
 
 
 #CELERY STUFFS
-# CELERY_BROKER_URL = 'redis://localhost:25672'
-# CELERY_RESULT_BACKEND = 'redis://localhost:25672'
-# CELERY_ACCEPT_CONTENT = ['application/json']
-# CELERY_RESULT_SERIALIZER = 'json'
-# CELERY_TASK_SERIALIZER = 'json'
-# CELERY_TIMEZONE = 'Asia/Kathmandu'
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Kathmandu'
 # CELERY_TASK_TRACK_STARTED = True
 # CELERY_TASK_TIME_LIMIT = 30 * 60
 
@@ -214,3 +214,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'dripshop_account.UserAccount'
 
 CART_SESSION_ID = 'cart'
+
+FIREBASE_CONFIG = {
+    "apiKey": "AIzaSyDoHPxWkQw8hJbtJS1XEdhxnEctgLBs394",
+    "authDomain": "dripshop-57029.firebaseapp.com",
+    'databaseURL': 'YOUR_DATABASE_URL',
+    "projectId": "dripshop-57029",
+    "storageBucket": "dripshop-57029.appspot.com",
+    "messagingSenderId": "411065000651",
+    "appId": "1:411065000651:web:6ac998cdba2b04e1a3714e",
+    'measurementId': 'YOUR_MEASUREMENT_ID',
+}

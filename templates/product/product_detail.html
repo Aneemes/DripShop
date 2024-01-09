@@ -14,9 +14,9 @@
         </form>
 
         {% if user_wishlist and product in user_wishlist.products.all %}
-            <a href="{% url 'wishlist:wishlist_remove' product_id=product.id %}">Remove from Wishlist</a>
+            <a href="{% url 'wishlist:wishlist_remove' product_id=product.id %}"><button>Remove from Wishlist</button></a>
         {% else %}
-            <a href="{% url 'wishlist:wishlist_add' product_id=product.id %}">Add to Wishlist</a>
+            <a href="{% url 'wishlist:wishlist_add' product_id=product.id %}"><button>Add to Wishlist</button></a>
         {% endif %}
 
     {% else %}

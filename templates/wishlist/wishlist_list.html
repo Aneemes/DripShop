@@ -7,7 +7,7 @@
         <ul>
         {% for item in wishlist %}
             {% for product in item.products.all %}
-                <li>{{ product }}</li>
+                <li><a href="{% url 'product:product_detail' pk=product.pk %}">{{ product }}</a></li>
             {% endfor %}
         {% endfor %}
         </ul>
