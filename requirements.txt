@@ -17,3 +17,6 @@ base58==2.1.1
 eventlet==0.34.2
 firebase-admin==6.3.0
 python-firebase==1.2
+djangorestframework==3.14.0
+dj-rest-auth==5.0.2
+djangorestframework-simplejwt==5.3.1

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from dripshop_apps.product.models import Product
 from django.conf import settings
 from django.urls import reverse
-
+from dripshop_apps.core.abstract_models import AbstractTimeStampModel
 import base58
 import random
 import string
@@ -31,7 +31,7 @@ def generate_alphanumeric_id(length=8):
 #             setattr(model_instance, self.attname, value)
 #         return value
 
-class Order(models.Model):
+class Order(AbstractTimeStampModel):
     STATUS_CHOICES = [
         ('pending', 'Pending'),
         ('processing', 'Processing'),
@@ -43,7 +43,7 @@ class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     products = models.ManyToManyField(Product, through='OrderItem')
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
-    created_at = models.DateTimeField(auto_now_add=True)
+    # created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     delivery_address = models.CharField(max_length=255)
     delivery_phone = models.CharField(max_length=10)

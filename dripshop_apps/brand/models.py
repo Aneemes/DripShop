@@ -48,6 +48,10 @@ class Brand(AbstractItem):
         else:
             self.product_brand.update(visible=True)
 
+    def get_item_count(self):
+        item_count = self.product_brand.count()
+        return item_count
+
     def __str__(self):
         return self.title
 

@@ -51,6 +51,10 @@ class Category(AbstractItem, MPTTModel):
         else:
             update_related_product_visibility.delay(self.pk, self.published == 'yes')  # Enqueue task
 
+    def get_item_count(self):
+        item_count = self.product_category.count()
+        return item_count
+
     def __str__(self):
         return self.title
 

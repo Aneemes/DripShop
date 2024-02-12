@@ -48,6 +48,11 @@ THIRDPARTY_APPS = [
     'nested_admin',
     # 'django_celery_results',
     # 'django_celery_beat',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+    'rest_framework_simplejwt',  
 ]
 
 DRIPSHOP_APPS = [
@@ -225,3 +230,24 @@ FIREBASE_CONFIG = {
     "appId": os.environ.get('FIREBASE_APP_ID'),
     'measurementId': os.environ.get('FIREBASE_MEASUREMENT_ID'),
 }
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    ]
+}
+
+REST_AUTH = {
+    'USE_JWT': True,
+    'JWT_AUTH_COOKIE': 'my-app-auth',
+    'JWT_AUTH_REFRESH_COOKIE': 'my-refresh-token'
+}
+
+# <EMAIL_CONFIRM_REDIRECT_BASE_URL>/<key>
+EMAIL_CONFIRM_REDIRECT_BASE_URL = \
+    "http://localhost:8000/email/confirm/"
+
+# <PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL>/<uidb64>/<token>/
+PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL = \
+    "http://localhost:8000/password-reset/confirm/"
