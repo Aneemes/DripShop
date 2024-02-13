@@ -8,7 +8,6 @@ from django.utils import timezone
 from django.dispatch import receiver
 from django.db.models.signals import pre_save, pre_delete
 from dripshop_apps.core.receivers import slugify_pre_save, publish_state_pre_save, update_featured_on_publish, update_visibility_on_publish
-from .tasks import upload_to_firebase
 from .utils import product_thumbnail_upload_path, product_image_upload_path, sanitize_for_directory_name
 
 
