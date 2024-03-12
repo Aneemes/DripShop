@@ -5,11 +5,18 @@ from django.urls import reverse
 from django.contrib.sites.models import Site
 from dripshop_apps.core.utils import get_domain_name
 from dripshop_apps.core.tasks import send_email_task
-
+from dripshop_apps.notifications.models import Notification
 #TODO:
 #make this a celery task so its quicker 
 #Make a model for admin_email and use that instead of settings.ADMIN_EMAIL so it is easier to chnage for the user
 #also remove print statements amd format the email structure properly
+
+
+def create_notification_on_order_placement(request, order):
+    user = request.user
+    title = 'order Placed'
+    content = 'this is a content'
+    notification = Notification.objects.create(user=user, title=title, content=content)
 
 def send_mail_on_order_placement(request, order):
     """Send an email to the admin and the customer when an order is placed"""   

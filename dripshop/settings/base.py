@@ -65,6 +65,7 @@ DRIPSHOP_APPS = [
     'dripshop_apps.product',
     'dripshop_apps.review',
     'dripshop_apps.wishlist',
+    'dripshop_apps.notifications'
 ]
 
 INSTALLED_APPS += THIRDPARTY_APPS + DRIPSHOP_APPS 
@@ -241,7 +242,8 @@ REST_FRAMEWORK = {
 REST_AUTH = {
     'USE_JWT': True,
     'JWT_AUTH_COOKIE': 'my-app-auth',
-    'JWT_AUTH_REFRESH_COOKIE': 'my-refresh-token'
+    'JWT_AUTH_REFRESH_COOKIE': 'my-refresh-token',
+    'SIGNING_KEY': 'helloworld'
 }
 
 # <EMAIL_CONFIRM_REDIRECT_BASE_URL>/<key>

@@ -8,7 +8,7 @@ from dripshop_apps.dripshop_account.models import UserAccount
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
 from django.db import transaction
-from dripshop_apps.order.utils import send_mail_on_order_placement
+from dripshop_apps.order.utils import send_mail_on_order_placement, create_notification_on_order_placement
 from dripshop_apps.wishlist.tasks import remove_products_from_wishlist
 
 
@@ -53,6 +53,7 @@ def order_create(request):
                     cart_items.delete()
 
                     transaction.on_commit(lambda: send_mail_on_order_placement(request, order=order))
+                    transaction.on_commit(lambda: create_notification_on_order_placement(request, order=order))
 
                     messages.success(request, "Your order has been placed successfully.")
                     return redirect("order:order_detail", order_id=order.id)
